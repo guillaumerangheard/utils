@@ -69,18 +69,6 @@
 	
 	// [x.x.x] Number _.avg ( Collection collection [ , Function getter = _.identity ] )
 	// [x.x.x] Number _.average ( Collection collection [ , Function getter = _.identity ] )
-	_.avg=_.average=function(a,f){
-		var r=0;
-		if(_.isCollection(a)){
-			f=_.getter(f);
-			var i=-1,l=a.length;
-			while(++i<l){
-				r+=f(a[i]);
-			}
-			r/=l;
-		}
-		return r;
-	};
 	
 	// [0.1.0] Variable _.const ( Any value )
 	// [0.1.0] Variable _.constant ( Any value )
@@ -91,6 +79,7 @@
 	};
 	
 	// [0.1.0] Number _.count ( Collection collection , Function counter [ , Any context = root ] )
+	// -> Boolean counter ( Variable item , Number index , Collection collection )
 	_.count=function(a,f,c){
 		var r=0;
 		if(_.isCollection(a)){
@@ -118,10 +107,19 @@
 		}
 	};
 	
-	// [x.x.x] Void _.each.key ( Object object , Function iterator [ , Any context = root ] )
+	// [0.1.0] Void _.each.key ( Object object , Function iterator [ , Any context = root ] )
 	// -> Boolean iterator ( Variable item , String index , Collection collection )
+	_.each.key=function(a,f,c){
+		c=c||root;
+		var i=-1,k=_.keys(a),l=k.length;
+		while(++i<l){
+			if(false===f.call(c,a[k[i]],k[i],a)){
+				break;
+			}
+		}
+	};
 	
-	// [x.x.x] Void _.each.right ( Collection collection , Function iterator [ , Any context = root ] )
+	// [0.1.0] Void _.each.right ( Collection collection , Function iterator [ , Any context = root ] )
 	// -> Boolean iterator ( Variable item , Number index , Collection collection )
 	_.each.right=function(a,f,c){
 		if(_.isCollection(a)){
@@ -136,9 +134,21 @@
 	};
 	
 	// [0.1.0] Object _.extend ( Object extended , Object extender [ , Boolean preserve = false ] )
-	_.extend=function(a,b,p){
-		
-	};
+	_.extend=(function(){
+		var _e=function(k,v){this[k]=v;}
+		return function(a,b,p){
+			var r;
+			if(p){
+				r={};
+				_.each.key(a,_e,r);
+			}
+			else{
+				r=a;
+			}
+			_.each.key(b,_e,r);
+			return r;
+		};
+	})();
 	
 	// [0.1.0] Boolean _.false ( )
 	_["false"]=function(){
@@ -211,50 +221,112 @@
 	// [x.x.x] Function _.getter ( Function getter )
 	// [x.x.x] Function _.getter ( Number index )
 	// [x.x.x] Function _.getter ( String path )
-	_.getter=function(a){
-		
-	};
 	
 	// [0.1.0] Variable _.identity ( Any value )
 	_.identity=function(a){
 		return a;
 	};
 	
-	// [x.x.x] Boolean _.isArguments ( Any value )
+	// [0.1.0] Boolean _.isArguments ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isArguments=function(a){
+		return "[object Arguments]"===_tS(a)||(a!=null && "object"===typeof a && "callee" in a);
+	};
 	
-	// [x.x.x] Boolean _.isArray ( Any value )
+	// [0.1.0] Boolean _.isArray ( Any value )
+	_.isArray=function(a){
+		return "[object Array]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isBoolean ( Any value )
+	// [0.1.0] Boolean _.isBoolean ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isBoolean=function(a){
+		return true===a||false===a||"[object Boolean]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isCollection ( Any value )
+	// [0.1.0] Boolean _.isCollection ( Any value )
+	_.isCollection=function(a){
+		return a&&_.isNumber(a.length);
+	};
 	
-	// [x.x.x] Boolean _.isDefined ( Any value )
+	// [0.1.0] Boolean _.isDate ( Any value )
+	_.isDate=function(a){
+		return "[object Date]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isError ( Any value )
+	// [0.1.0] Boolean _.isDefined ( Any value )
+	_.isDefined=function(a){
+		return !_.isUndefined(a);
+	};
 	
-	// [x.x.x] Boolean _.isFalsey ( Any value )
+	// [0.1.0] Boolean _.isError ( Any value )
+	_.isError=function(a){
+		return "[object Error]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isFunction ( Any value )
+	// [0.1.0] Boolean _.isFalsey ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isFalsey=function(a){
+		return !a;
+	};
 	
-	// [x.x.x] Boolean _.isNaN ( Any value )
+	// [0.1.0] Boolean _.isFunction ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isFunction=function(a){
+		return "[object Function]"===_tS(a)||"function"===typeof a;
+	};
 	
-	// [x.x.x] Boolean _.isNull ( Any value )
+	// [0.1.0] Boolean _.isNaN ( Any value )
+	_.isNaN=function(a){
+		return a!==a;
+	};
 	
-	// [x.x.x] Boolean _.isNumber ( Any value )
+	// [0.1.0] Boolean _.isNull ( Any value )
+	_.isNull=function(a){
+		return null===a;
+	};
 	
-	// [x.x.x] Boolean _.isObject ( Any value )
+	// [0.1.0] Boolean _.isNumber ( Any value )
+	_.isNumber=function(a){
+		return !_.isNaN(a)&&"[object Number]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isRegExp ( Any value )
+	// [0.1.0] Boolean _.isObject ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isObject=function(a){
+		return O(a)===a;
+	};
 	
-	// [x.x.x] Boolean _.isString ( Any value )
+	// [0.1.0] Boolean _.isRegExp ( Any value )
+	_.isRegExp=function(a){
+		return "[object RegExp]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isTruthy ( Any value )
+	// [0.1.0] Boolean _.isString ( Any value )
+	_.isString=function(a){
+		return "[object String]"===_tS(a);
+	};
 	
-	// [x.x.x] Boolean _.isUndefined ( Any value )
+	// [0.1.0] Boolean _.isTruthy ( Any value )
+	_.isTruthy=function(a){
+		return !_.isFalsey(a);
+	};
 	
-	// [x.x.x] Array _.keys ( Object object )
+	// [0.1.0] Boolean _.isUndefined ( Any value )
+	// Borrowed from is.js 0.9.0.
+	_.isUndefined=function(a){
+		return a===void 0;
+	};
+	
+	// [0.1.0] Array _.keys ( Object object )
 	_.keys=O.keys||function(a){
-		
+		var r=[];
+		for(var k in a){
+			if(a.hasOwbProperty(k)){
+				r.push(k);
+			}
+		}
+		return r;
 	};
 	
 	// [0.1.0] Array _.map ( Collection collection , Function mapper [ , Any context = root ] )
