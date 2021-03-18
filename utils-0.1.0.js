@@ -6,10 +6,12 @@
 	
 	// [0.1.0] Boolean _.all ( Collection collection , Function test [ , Any context = root ] )
 	// -> Boolean test ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.all=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(!f.call(c,a[i],i,a)){
 					return false;
@@ -21,8 +23,9 @@
 	
 	// [0.1.0] Boolean _.all.right ( Collection collection , Function test [ , Any context = root ] )
 	// -> Boolean test ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.all.right=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -36,10 +39,12 @@
 	
 	// [0.1.0] Boolean _.any ( Collection collection , Function test [ , Any context =root ] )
 	// -> Boolean test ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.any=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(f.call(c,a[i],i,a)){
 					return true;
@@ -51,8 +56,9 @@
 	
 	// [0.1.0] Boolean _.any.right ( Collection collection , Function test [ , Any context =root ] )
 	// -> Boolean test ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.any.right=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -67,8 +73,22 @@
 	
 	// [x.x.x] Function _.arrow ( String expression )
 	
-	// [x.x.x] Number _.avg ( Collection collection [ , Function getter = _.identity ] )
-	// [x.x.x] Number _.average ( Collection collection [ , Function getter = _.identity ] )
+	// [0.1.0] Number _.avg ( Collection collection [ , Function getter = _.identity ] )
+	// [0.1.0] Number _.average ( Collection collection [ , Function getter = _.identity ] )
+	//// Requires: _.identity , _.isArrayLike
+	_.avg=_.average=function(a,b){
+		var r=0;
+		if(_.isArrayLike(a)){
+			b=b||_.identity;
+			var i=-1,
+				l=a.length;
+			while(++i<l){
+				r+=b(a[i]);
+			}
+			r/=(0<l?l:1);
+		}
+		return r;
+	}
 	
 	// [0.1.0] Variable _.const ( Any value )
 	// [0.1.0] Variable _.constant ( Any value )
@@ -80,10 +100,12 @@
 	
 	// [0.1.0] Number _.count ( Collection collection , Function counter [ , Any context = root ] )
 	// -> Boolean counter ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.count=function(a,f,c){
 		var r=0;
-		if(_.isCollection(a)){
-			var i=-1,l=a.length;
+		if(_.isArrayLike(a)){
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(f.call(c,a[i],i,a)){
 					r++;
@@ -95,10 +117,12 @@
 	
 	// [0.1.0] Void _.each ( Collection collection , Function iterator [ , Any context = root ] )
 	// -> Boolean iterator ( Variable item , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.each=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(false===f.call(c,a[i],i,a)){
 					break;
@@ -109,9 +133,12 @@
 	
 	// [0.1.0] Void _.each.key ( Object object , Function iterator [ , Any context = root ] )
 	// -> Boolean iterator ( Variable item , String index , Collection collection )
+	//// Requires: _.keys
 	_.each.key=function(a,f,c){
 		c=c||root;
-		var i=-1,k=_.keys(a),l=k.length;
+		var i=-1,
+			k=_.keys(a),
+			l=k.length;
 		while(++i<l){
 			if(false===f.call(c,a[k[i]],k[i],a)){
 				break;
@@ -134,6 +161,7 @@
 	};
 	
 	// [0.1.0] Object _.extend ( Object extended , Object extender [ , Boolean preserve = false ] )
+	//// Requires: _.each.key
 	_.extend=(function(){
 		var _e=function(k,v){this[k]=v;}
 		return function(a,b,p){
@@ -157,11 +185,13 @@
 	
 	// [0.1.0] Array _.filter ( Collection collection , Function test [ , Anyh context = root ] )
 	// -> Boolean test ( Variable value , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.filter=function(a,f,c){
 		var r=[];
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(f.call(c,a[i],i,a)){
 					r.push(a[i]);
@@ -173,9 +203,10 @@
 	
 	// [0.1.0] Array _.filter.right ( Collection collection , Function test [ , Anyh context = root ] )
 	// -> Boolean test ( Variable value , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.filter.right=function(a,f,c){
 		var r=[];
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -189,10 +220,12 @@
 	
 	// [0.1.0] Variable _.find ( Collection collection , Function test [ , Any context = root ] )
 	// -> test ( Variable value , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.find=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				if(f.call(c,a[i],i,a)){
 					return a[i];
@@ -203,8 +236,9 @@
 	
 	// [0.1.0] Variable _.find.last ( Collection collection , Function test [ , Any context = root ] )
 	// -> Boolean test ( Variable value , Number index , Collection collection )
+	//// Requires: _.isArrayLike
 	_.find.last=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -228,7 +262,7 @@
 	};
 	
 	// [0.1.0] Boolean _.isArguments ( Any value )
-	// Borrowed from is.js 0.9.0.
+	//// Borrowed from is.js 0.9.0.
 	_.isArguments=function(a){
 		return "[object Arguments]"===_tS(a)||(a!=null && "object"===typeof a && "callee" in a);
 	};
@@ -238,15 +272,16 @@
 		return "[object Array]"===_tS(a);
 	};
 	
-	// [0.1.0] Boolean _.isBoolean ( Any value )
-	// Borrowed from is.js 0.9.0.
-	_.isBoolean=function(a){
-		return true===a||false===a||"[object Boolean]"===_tS(a);
+	// [0.1.0] Boolean _.isArrayLike ( Any value )
+	//// Requires: _.isNumber
+	_.isArrayLike=function(a){
+		return a&&_.isNumber(a.length);
 	};
 	
-	// [0.1.0] Boolean _.isCollection ( Any value )
-	_.isCollection=function(a){
-		return a&&_.isNumber(a.length);
+	// [0.1.0] Boolean _.isBoolean ( Any value )
+	//// Borrowed from is.js 0.9.0.
+	_.isBoolean=function(a){
+		return true===a||false===a||"[object Boolean]"===_tS(a);
 	};
 	
 	// [0.1.0] Boolean _.isDate ( Any value )
@@ -255,6 +290,7 @@
 	};
 	
 	// [0.1.0] Boolean _.isDefined ( Any value )
+	//// Requires: _.isUndefined
 	_.isDefined=function(a){
 		return !_.isUndefined(a);
 	};
@@ -265,13 +301,13 @@
 	};
 	
 	// [0.1.0] Boolean _.isFalsey ( Any value )
-	// Borrowed from is.js 0.9.0.
+	//// Borrowed from is.js 0.9.0.
 	_.isFalsey=function(a){
 		return !a;
 	};
 	
 	// [0.1.0] Boolean _.isFunction ( Any value )
-	// Borrowed from is.js 0.9.0.
+	//// Borrowed from is.js 0.9.0.
 	_.isFunction=function(a){
 		return "[object Function]"===_tS(a)||"function"===typeof a;
 	};
@@ -287,12 +323,13 @@
 	};
 	
 	// [0.1.0] Boolean _.isNumber ( Any value )
+	//// Requires: _.isNaN
 	_.isNumber=function(a){
 		return !_.isNaN(a)&&"[object Number]"===_tS(a);
 	};
 	
 	// [0.1.0] Boolean _.isObject ( Any value )
-	// Borrowed from is.js 0.9.0.
+	//// Borrowed from is.js 0.9.0.
 	_.isObject=function(a){
 		return O(a)===a;
 	};
@@ -308,12 +345,13 @@
 	};
 	
 	// [0.1.0] Boolean _.isTruthy ( Any value )
+	//// Requires: _.isFalsey
 	_.isTruthy=function(a){
 		return !_.isFalsey(a);
 	};
 	
 	// [0.1.0] Boolean _.isUndefined ( Any value )
-	// Borrowed from is.js 0.9.0.
+	//// Borrowed from is.js 0.9.0.
 	_.isUndefined=function(a){
 		return a===void 0;
 	};
@@ -322,7 +360,7 @@
 	_.keys=O.keys||function(a){
 		var r=[];
 		for(var k in a){
-			if(a.hasOwbProperty(k)){
+			if(a.hasOwnProperty(k)){
 				r.push(k);
 			}
 		}
@@ -330,11 +368,13 @@
 	};
 	
 	// [0.1.0] Array _.map ( Collection collection , Function mapper [ , Any context = root ] )
+	//// Requires: _.isArrayLike
 	_.map=function(a,f,c){
 		var r=[];
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				r.push(f.call(c,a[i],i,a));
 			}
@@ -343,9 +383,10 @@
 	};
 	
 	// [0.1.0] Array _.map.right ( Collection collection , Function mapper [ , Any context = root ] )
+	//// Requires: _.isArrayLike
 	_.map.right=function(a,f,c){
 		var r=[];
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -356,10 +397,12 @@
 	};
 	
 	// [0.1.0] Array _.map.self ( Collection collection , Function mapper [ , Any context = root ] )
+	//// Requires: _.isArrayLike
 	_.map.self=function(a,f,c){
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				a[i]=f.call(c,a[i],i,a);
 			}
@@ -373,11 +416,13 @@
 	// [x.x.x] Number _.now ( )
 	
 	// [0.1.0] Variable _.reduce ( Collection collection , Any memo , Function reducer [ , Any context = root ] )
+	//// Requires: _.isArrayLike
 	_.reduce=function(a,m,f,c){
 		var r=m;
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
-			var i=-1,l=a.length;
+			var i=-1,
+				l=a.length;
 			while(++i<l){
 				r=f.call(c,r,a[i],i,a);
 			}
@@ -386,9 +431,10 @@
 	};
 	
 	// [0.1.0] Variable _.reduce.right ( Collection collection , Any memo , Function reducer [ , Any context = root ] )
+	//// Requires: _.isArrayLike
 	_.reduce.right=function(a,m,f,c){
 		var r=m;
-		if(_.isCollection(a)){
+		if(_.isArrayLike(a)){
 			c=c||root;
 			var i=a.length;
 			while(--i>-1){
@@ -398,7 +444,25 @@
 		return r;
 	};
 	
-	// [x.x.x] Object _.transform ( Object transformed , Object transformer )
+	// [0.1.0] Object _.transform ( Object transformed , Object transformer [ , onlyExplicit = false ] )
+	_.transform=function(a,b,e){
+		var r={};
+		if(e){
+			_.each.
+		}
+		else{
+			var K=_.keys(b);
+			_.each.key(a,function(v,k){
+				if(-1<K.indexOf(k)){
+					
+				}
+				else{
+					r[k]=v;
+				}
+			});
+		}
+		return r;
+	};
 	
 	// [0.1.0] Boolean _.true ( )
 	_["true"]=function(){
